@@ -1,19 +1,19 @@
 /**
  * ============================================================
- * MAIN CLASS – UseCase4RoomSearch
+ * MAIN CLASS – UseCase5BookingRequestQueue
  * ============================================================
  *
- * Use Case 4: Room Search & Availability Check
+ * Use Case 5: Booking Request (First-Come-First-Served)
  *
  * Description:
- * This class demonstrates how guests
- * can view available rooms without
- * modifying inventory data.
+ * This class demonstrates how booking
+ * requests are accepted and queued
+ * in a fair and predictable order.
  *
- * The system enforces read-only access
- * by design and usage discipline.
+ * No room allocation or inventory
+ * update is performed here.
  *
- * @version 4.0
+ * @version 5.0
  */
 
 public class Main {
@@ -25,23 +25,42 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        RoomInventory inventory = new RoomInventory();
+        // Display application header
+        System.out.println("Booking Request Queue");
 
-        SingleRoom singleRoom = new SingleRoom();
-        DoubleRoom doubleRoom = new DoubleRoom();
-        SuiteRoom suiteRoom = new SuiteRoom();
+        // Initialize booking queue
+        BookingRequestQueue bookingQueue =
+                new BookingRequestQueue();
 
-        RoomSearchService searchService =
-                new RoomSearchService();
+        // Create booking requests
+        Reservation r1 =
+                new Reservation("Abhi", "Single");
 
-        System.out.println("Room Search");
-        System.out.println();
+        Reservation r2 =
+                new Reservation("Subha", "Double");
 
-        searchService.searchAvailableRooms(
-                inventory,
-                singleRoom,
-                doubleRoom,
-                suiteRoom);
+        Reservation r3 =
+                new Reservation("Vanmathi", "Suite");
+
+        // Add requests to queue
+        bookingQueue.addRequest(r1);
+        bookingQueue.addRequest(r2);
+        bookingQueue.addRequest(r3);
+
+        // Display queued booking requests in FIFO order
+        while (bookingQueue.hasPendingRequests()) {
+
+            Reservation r =
+                    bookingQueue.getNextRequest();
+
+            System.out.println(
+                    "Processing booking for Guest: "
+                            + r.getGuestName()
+                            + ", Room Type: "
+                            + r.getRoomType()
+            );
+
+        }
 
     }
 
