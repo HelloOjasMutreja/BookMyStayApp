@@ -1,19 +1,19 @@
 /**
  * ============================================================
- * MAIN CLASS – UseCase6RoomAllocation
+ * MAIN CLASS – UseCase7AddOnServiceSelection
  * ============================================================
  *
- * Use Case 6: Reservation Confirmation & Room Allocation
+ * Use Case 7: Add-On Service Selection
  *
  * Description:
- * This class demonstrates how booking
- * requests are confirmed and rooms
- * are allocated safely.
+ * This class demonstrates how optional
+ * services can be attached to a confirmed
+ * booking.
  *
- * It consumes booking requests in FIFO
- * order and updates inventory immediately.
+ * Services are added after room allocation
+ * and do not affect inventory.
  *
- * @version 6.0
+ * @version 7.0
  */
 
 public class Main {
@@ -25,36 +25,38 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        System.out.println("Room Allocation Processing");
+        System.out.println("Add-On Service Selection");
 
-        RoomInventory inventory =
-                new RoomInventory();
+        String reservationId = "Single-1";
 
-        BookingRequestQueue queue =
-                new BookingRequestQueue();
+        AddOnServiceManager manager =
+                new AddOnServiceManager();
 
-        RoomAllocationService allocator =
-                new RoomAllocationService();
+        AddOnService breakfast =
+                new AddOnService("Breakfast",500);
 
-        queue.addRequest(
-                new Reservation("Abhi","Single"));
+        AddOnService spa =
+                new AddOnService("Spa",1000);
 
-        queue.addRequest(
-                new Reservation("Subha","Single"));
+        manager.addService(
+                reservationId,
+                breakfast);
 
-        queue.addRequest(
-                new Reservation("Vanmathi","Suite"));
+        manager.addService(
+                reservationId,
+                spa);
 
-        while(queue.hasPendingRequests()){
+        double total =
+                manager.calculateTotalServiceCost(
+                        reservationId);
 
-            Reservation r =
-                    queue.getNextRequest();
+        System.out.println(
+                "Reservation ID: "
+                        + reservationId);
 
-            allocator.allocateRoom(
-                    r,
-                    inventory);
-
-        }
+        System.out.println(
+                "Total Add-On Cost: "
+                        + total);
 
     }
 
