@@ -1,22 +1,18 @@
-import java.util.Scanner;
-
 /**
  * ============================================================
- * MAIN CLASS – UseCase9ErrorHandlingValidation
+ * MAIN CLASS – UseCase10BookingCancellation
  * ============================================================
  *
- * Use Case 9: Error Handling & Validation
+ * Use Case 10: Booking Cancellation & Inventory Rollback
  *
  * Description:
- * This class demonstrates how user input
- * is validated before booking is processed.
+ * This class demonstrates how confirmed
+ * bookings can be cancelled safely.
  *
- * The system:
- * - Accepts user input
- * - Validates input centrally
- * - Handles errors gracefully
+ * Inventory is restored and rollback
+ * history is maintained.
  *
- * @version 9.0
+ * @version 10.0
  */
 
 public class Main {
@@ -28,63 +24,32 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        System.out.println("Booking Validation");
-
-        Scanner scanner =
-                new Scanner(System.in);
+        System.out.println("Booking Cancellation");
 
         RoomInventory inventory =
                 new RoomInventory();
 
-        ReservationValidator validator =
-                new ReservationValidator();
+        CancellationService cancellationService =
+                new CancellationService();
 
-        BookingRequestQueue bookingQueue =
-                new BookingRequestQueue();
+        String reservationId = "Single-1";
 
-        try{
+        cancellationService.registerBooking(
+                reservationId,
+                "Single");
 
-            System.out.print(
-                    "Enter guest name: ");
+        cancellationService.cancelBooking(
+                reservationId,
+                inventory);
 
-            String guestName =
-                    scanner.nextLine();
+        cancellationService.showRollbackHistory();
 
-            System.out.print(
-                    "Enter room type (Single/Double/Suite): ");
+        System.out.println();
 
-            String roomType =
-                    scanner.nextLine();
-
-            validator.validate(
-                    guestName,
-                    roomType,
-                    inventory);
-
-            Reservation reservation =
-                    new Reservation(
-                            guestName,
-                            roomType);
-
-            bookingQueue.addRequest(
-                    reservation);
-
-            System.out.println(
-                    "Booking request accepted.");
-
-        }
-        catch(InvalidBookingException e){
-
-            System.out.println(
-                    "Booking failed: "
-                            + e.getMessage());
-
-        }
-        finally{
-
-            scanner.close();
-
-        }
+        System.out.println(
+                "Updated Single Room Availability: "
+                        + inventory.getRoomAvailability()
+                        .get("Single"));
 
     }
 
