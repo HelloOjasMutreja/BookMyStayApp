@@ -1,19 +1,20 @@
 /**
  * ============================================================
- * MAIN CLASS – UseCase2RoomInitialization
+ * MAIN CLASS – UseCase3InventorySetup
  * ============================================================
  *
- * Use Case 2: Basic Room Types & Static Availability
+ * Use Case 3: Centralized Room Inventory Management
  *
  * Description:
- * This class demonstrates room initialization
- * using domain models before introducing
- * centralized inventory management.
+ * This class demonstrates how room availability
+ * is managed using a centralized inventory.
  *
- * Availability is represented using
- * simple variables to highlight limitations.
+ * Room objects are used to retrieve pricing
+ * and room characteristics.
  *
- * @version 2.1
+ * No booking or search logic is introduced here.
+ *
+ * @version 3.1
  */
 
 public class Main {
@@ -25,32 +26,33 @@ public class Main {
      */
     public static void main(String[] args) {
 
+        RoomInventory inventory = new RoomInventory();
+
         SingleRoom singleRoom = new SingleRoom();
         DoubleRoom doubleRoom = new DoubleRoom();
         SuiteRoom suiteRoom = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
-
-        System.out.println("Hotel Room Initialization");
+        System.out.println("Hotel Room Inventory Status");
         System.out.println();
 
         System.out.println("Single Room:");
         singleRoom.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Single"));
 
         System.out.println();
 
         System.out.println("Double Room:");
         doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Double"));
 
         System.out.println();
 
         System.out.println("Suite Room:");
         suiteRoom.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Suite"));
 
     }
 
